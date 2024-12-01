@@ -3,9 +3,11 @@ import { pabellonesApi, cirugiasApi } from '../services/api';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useState } from 'react';
+import EventosCirugia from './EventosCirugia';
 
 function TableroPabellones() {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedCirugiaId, setSelectedCirugiaId] = useState(null);
 
   const { data: pabellones, isLoading: loadingPabellones } = useQuery({
     queryKey: ['pabellones'],
@@ -47,7 +49,9 @@ function TableroPabellones() {
     return cirugias?.find(cirugia => cirugia.pabellon_id === pabellonId);
   };
 
-  
+  const handleEventosClick = (cirugiaId) => {
+    setSelectedCirugiaId(cirugiaId);
+  };
 
   return (
     <div className="space-y-6">
@@ -97,12 +101,29 @@ function TableroPabellones() {
                       URGENCIA
                     </span>
                   )}
+                  <button
+                    onClick={() => handleEventosClick(cirugia.id)}
+                    className="mt-2 w-full text-sm bg-gray-100 text-gray-700 px-3 py-1.5 rounded hover:bg-gray-200 transition-colors"
+                  >
+                    Gestionar Eventos
+                  </button>
                 </div>
               )}
             </div>
           );
         })}
       </div>
+      {/* Modal de Eventos */}
+      {selectedCirugiaId && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="max-w-2xl w-full">
+            <EventosCirugia 
+              cirugiaId={selectedCirugiaId}
+              onClose={() => setSelectedCirugiaId(null)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
