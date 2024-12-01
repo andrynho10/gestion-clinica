@@ -19,7 +19,8 @@ export const cirugiasApi = {
   getAll: () => api.get('/cirugias'),
   getByDate: (fecha) => api.get(`/cirugias/fecha/${fecha}`),
   create: (data) => api.post('/cirugias', data),
-  updateStatus: (id, estado) => api.patch(`/cirugias/${id}/estado`, { estado })
+  updateStatus: (id, estado) => api.patch(`/cirugias/${id}/estado`, { estado }),
+  getEstadisticas: () => api.get('/cirugias/estadisticas')
 };
 
 export const eventosApi = {
