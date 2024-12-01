@@ -5,6 +5,7 @@ require('dotenv').config();
 const pabellonRoutes = require('./routes/pabellonRoutes');
 const personalRoutes = require('./routes/personalRoutes');
 const cirugiaRoutes = require('./routes/cirugiaRoutes');
+const eventoRoutes = require('./routes/eventoRoutes');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/pabellones', pabellonRoutes);
 app.use('/api/personal', personalRoutes);
 app.use('/api/cirugias', cirugiaRoutes);
+app.use('/api/eventos', eventoRoutes);
 
 // Ruta de prueba
 app.get('/api/test', (req, res) => {
