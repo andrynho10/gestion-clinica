@@ -71,47 +71,47 @@ function Dashboard() {
       </div>
 
       {/* Gráficos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
         {/* Gráfico de barras */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="text-lg font-medium mb-4 text-gray-900">Cirugías por Tipo de Pabellón</h3>
-          <div className="h-80">
+        <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-medium mb-6 text-gray-900">Cirugías por Tipo de Pabellón</h3>
+            <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={datosParaBarras}>
+                <BarChart data={datosParaBarras}>
                 <XAxis dataKey="tipo" />
                 <YAxis />
                 <Tooltip />
                 <Bar dataKey="cantidad" fill="#3B82F6" />
-              </BarChart>
+                </BarChart>
             </ResponsiveContainer>
-          </div>
+            </div>
         </div>
 
         {/* Gráfico circular */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="text-lg font-medium mb-4 text-gray-900">Distribución de Eventos</h3>
-          <div className="h-80">
+        <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-medium mb-6 text-gray-900">Distribución de Eventos</h3>
+            <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
+                <PieChart>
                 <Pie
-                  data={datosParaPie}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label={({name, value}) => `${name}: ${value}`}
+                    data={datosParaPie}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={45}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({name, value}) => `${name}: ${value}`}
                 >
-                  {datosParaPie.map((_, index) => (
+                    {datosParaPie.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
+                    ))}
                 </Pie>
                 <Tooltip />
-              </PieChart>
+                </PieChart>
             </ResponsiveContainer>
-          </div>
+            </div>
         </div>
-      </div>
+        </div>
     </div>
   );
 }
