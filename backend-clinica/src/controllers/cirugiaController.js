@@ -149,7 +149,10 @@ const cirugiaController = {
             console.error('Error al obtener cirugías por fecha:', error);
             res.status(500).json({ error: 'Error interno del servidor' });
         }
-    }
+    },
+
+    
+
 };
 
 module.exports = cirugiaController;

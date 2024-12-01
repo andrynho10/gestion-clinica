@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast'
 import TableroPabellones from './components/TableroPabellones'
 import FormularioCirugia from './components/FormularioCirugia'
 
+
 const queryClient = new QueryClient()
 
 function App() {
