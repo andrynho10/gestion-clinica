@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { cirugiasApi } from '../services/api';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { cirugiasApi, pabellonesApi } from '../services/api';
 import toast from 'react-hot-toast';
 
 function FormularioCirugia() {
@@ -15,16 +15,34 @@ function FormularioCirugia() {
     requiere_aseo_profundo: false
   });
 
+  const { data: pabellones } = useQuery({
+    queryKey: ['pabellones'],
+    queryFn: async () => {
+      const response = await pabellonesApi.getAll();
+      return response.data;
+    }
+  });
 
   const mutation = useMutation({
     mutationFn: async (nuevaCirugia) => {
-      return await cirugiasApi.create(nuevaCirugia);
+      const dateTime = `${nuevaCirugia.fecha_programada}T${nuevaCirugia.hora_programada}:00`;
+      return await cirugiasApi.create({
+        ...nuevaCirugia,
+        fecha_programada: dateTime,
+        personal_asignado: [
+          // Personal mínimo requerido (por ahora hardcodeado)
+          { personal_id: 1, rol: "cirujano" },
+          { personal_id: 3, rol: "anestesista" },
+          { personal_id: 5, rol: "enfermera" }
+        ]
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['cirugias']);
       toast.success('Cirugía programada con éxito');
       setFormData({
         paciente_nombre: '',
+        pabellon_id: '',
         fecha_programada: '',
         hora_programada: '',
         duracion_estimada: 60,
@@ -39,18 +57,10 @@ function FormularioCirugia() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    const dateTime = `${formData.fecha_programada}T${formData.hora_programada}:00`;
-    
-    const cirugia = {
-      ...formData,
-      fecha_programada: dateTime,
-      pabellon_id: null, // Se asignará con drag & drop
-      personal_asignado: [] // Se asignará con drag & drop
-    };
-
-    mutation.mutate(cirugia);
+    mutation.mutate(formData);
   };
+
+  const pabellonesDisponibles = pabellones?.filter(p => p.estado === 'disponible') || [];
 
   return (
     <div className="bg-white p-4 rounded-lg shadow">
@@ -67,6 +77,26 @@ function FormularioCirugia() {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             required
           />
+        </div>
+
+        {/* Nuevo campo de selección de pabellón */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Pabellón
+          </label>
+          <select
+            value={formData.pabellon_id}
+            onChange={(e) => setFormData({...formData, pabellon_id: e.target.value})}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            required
+          >
+            <option value="">Seleccione un pabellón</option>
+            {pabellonesDisponibles.map(pabellon => (
+              <option key={pabellon.id} value={pabellon.id}>
+                {pabellon.nombre}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
