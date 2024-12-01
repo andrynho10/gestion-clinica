@@ -77,7 +77,7 @@ function TableroPabellones() {
               className="bg-white rounded-lg shadow p-4 border border-gray-200"
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-medium">{pabellon.nombre}</h3>
+                <h3 className="font-medium text-gray-900">{pabellon.nombre}</h3>
                 <span 
                   className={`px-2 py-1 rounded-full text-xs font-medium ${estadoColor[pabellon.estado]}`}
                 >
