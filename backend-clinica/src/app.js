@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const pabellonRoutes = require('./routes/pabellonRoutes');
+const personalRoutes = require('./routes/personalRoutes');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Rutas
 app.use('/api/pabellones', pabellonRoutes);
+app.use('/api/personal', personalRoutes);
 
 // Ruta de prueba
 app.get('/api/test', (req, res) => {
