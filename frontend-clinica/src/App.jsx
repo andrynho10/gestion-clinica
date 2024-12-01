@@ -13,7 +13,7 @@ function App() {
       <DndProvider backend={HTML5Backend}>
         <div className="min-h-screen bg-gray-100">
           <div className="max-w-[1500px] mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-8">
+            <h1 className="text-3xl font-bold mb-8 text-gray-900">
               Sistema de Gestión de Pabellones
             </h1>
             <div className="flex gap-8">
@@ -29,7 +29,7 @@ function App() {
         <Toaster position="top-right" />
       </DndProvider>
     </QueryClientProvider>
-  )
+  );
 }
 
 export default App

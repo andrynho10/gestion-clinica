@@ -51,13 +51,13 @@ function TableroPabellones() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center text-gray-900">
         <h2 className="text-xl font-semibold">
           Tablero de Pabellones - {format(selectedDate, "EEEE d 'de' MMMM", { locale: es })}
         </h2>
         <input
           type="date"
-          className="border rounded px-3 py-1"
+          className="block rounded-md border px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600"
           value={format(selectedDate, 'yyyy-MM-dd')}
           onChange={(e) => setSelectedDate(new Date(e.target.value))}
         />
