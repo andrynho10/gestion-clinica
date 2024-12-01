@@ -151,7 +151,51 @@ const cirugiaController = {
         }
     },
 
+    getEstadisticas: async (req, res) => {
+        const client = await pool.connect();
+        try {
+            // Total de cirugías y estados
+            const resumenResult = await client.query(`
+                SELECT 
+                    COUNT(*) as total_cirugias,
+                    COUNT(*) FILTER (WHERE estado = 'cancelada') as cirugias_canceladas,
+                    COUNT(*) FILTER (WHERE es_urgencia = true) as cirugias_urgencia
+                FROM cirugias
+            `);
     
+            // Cirugías por tipo de pabellón
+            const porPabellonResult = await client.query(`
+                SELECT 
+                    p.tipo,
+                    COUNT(*) as cantidad
+                FROM cirugias c
+                JOIN pabellones p ON c.pabellon_id = p.id
+                GROUP BY p.tipo
+            `);
+    
+            // Eventos registrados
+            const eventosResult = await client.query(`
+                SELECT 
+                    tipo_evento,
+                    COUNT(*) as cantidad
+                FROM eventos
+                GROUP BY tipo_evento
+            `);
+    
+            const estadisticas = {
+                resumen: resumenResult.rows[0],
+                cirugiasPorTipo: porPabellonResult.rows,
+                eventos: eventosResult.rows
+            };
+    
+            res.json(estadisticas);
+        } catch (error) {
+            console.error('Error al obtener estadísticas:', error);
+            res.status(500).json({ error: 'Error interno del servidor' });
+        } finally {
+            client.release();
+        }
+    }
 
 };
 

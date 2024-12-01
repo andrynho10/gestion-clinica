@@ -14,5 +14,7 @@ router.post('/', cirugiaController.create);
 // Actualizar estado de cirugía
 router.patch('/:id/estado', cirugiaController.updateStatus);
 
+// Obtener estadísticas cirugías
+router.get('/estadisticas', cirugiaController.getEstadisticas);
 
 module.exports = router;
