@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { cirugiasApi, pabellonesApi } from '../services/api';
 import toast from 'react-hot-toast';
+import SeleccionPersonal from './SeleccionPersonal';
 
 
 function FormularioCirugia() {
@@ -16,6 +17,9 @@ function FormularioCirugia() {
     requiere_aseo_profundo: false
   });
 
+  // Nuevo estado para el personal
+  const [personalSeleccionado, setPersonalSeleccionado] = useState({});
+
   const { data: pabellones } = useQuery({
     queryKey: ['pabellones'],
     queryFn: async () => {
@@ -27,14 +31,17 @@ function FormularioCirugia() {
   const mutation = useMutation({
     mutationFn: async (nuevaCirugia) => {
       const dateTime = `${nuevaCirugia.fecha_programada}T${nuevaCirugia.hora_programada}:00`;
+      
+      // Preparar el personal_asignado
+      const personal_asignado = Object.entries(personalSeleccionado).map(([tipo, id]) => ({
+        personal_id: id,
+        rol: tipo
+      }));
+
       return await cirugiasApi.create({
         ...nuevaCirugia,
         fecha_programada: dateTime,
-        personal_asignado: [
-          { personal_id: 1, rol: "cirujano" },
-          { personal_id: 3, rol: "anestesista" },
-          { personal_id: 5, rol: "enfermera" }
-        ]
+        personal_asignado
       });
     },
     onSuccess: () => {
@@ -49,6 +56,7 @@ function FormularioCirugia() {
         es_urgencia: false,
         requiere_aseo_profundo: false
       });
+      setPersonalSeleccionado({}); // Limpiar personal seleccionado
     },
     onError: (error) => {
       toast.error('Error al programar la cirugía: ' + error.message);
@@ -160,6 +168,13 @@ function FormularioCirugia() {
             />
             <span className="ml-2 text-sm text-gray-700">Requiere aseo profundo</span>
           </label>
+        </div>
+
+        <div className="border-t pt-6">
+          <SeleccionPersonal
+            onChange={setPersonalSeleccionado}
+            personalSeleccionado={personalSeleccionado}
+          />
         </div>
 
         <button
