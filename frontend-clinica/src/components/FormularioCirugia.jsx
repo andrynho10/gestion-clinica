@@ -7,6 +7,7 @@ function FormularioCirugia() {
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     paciente_nombre: '',
+    pabellon_id: '',
     fecha_programada: '',
     hora_programada: '',
     duracion_estimada: 60,
