@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import TableroPabellones from './components/TableroPabellones';
 import FormularioCirugia from './components/FormularioCirugia';
 import Dashboard from './components/Dashboard';
+import CalendarioCirugias from './components/CalendarioCirugias';
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,16 @@ function App() {
                   Tablero
                 </button>
                 <button
+                  onClick={() => setVistaActual('calendario')}
+                  className={`px-4 py-2 rounded-md ${
+                    vistaActual === 'calendario'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  Calendario
+                </button>
+                <button
                   onClick={() => setVistaActual('dashboard')}
                   className={`px-4 py-2 rounded-md ${
                     vistaActual === 'dashboard'
@@ -54,6 +65,8 @@ function App() {
                   <FormularioCirugia />
                 </div>
               </div>
+            ) : vistaActual === 'calendario' ? (
+              <CalendarioCirugias />
             ) : (
               <Dashboard />
             )}
