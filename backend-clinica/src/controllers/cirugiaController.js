@@ -7,8 +7,7 @@ const cirugiaController = {
             const result = await pool.query(`
                 SELECT c.*, p.nombre as nombre_pabellon 
                 FROM cirugias c 
-                LEFT JOIN pabellones p ON c.pabellon_id = p.id 
-                WHERE DATE(c.fecha_programada) = CURRENT_DATE 
+                LEFT JOIN pabellones p ON c.pabellon_id = p.id  
                 ORDER BY fecha_programada DESC
             `);
             res.json(result.rows);
