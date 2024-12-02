@@ -1,5 +1,3 @@
--- Limpiar datos existentes (opcional)
--- TRUNCATE TABLE pabellones RESTART IDENTITY CASCADE;
 
 -- Insertar salas grandes (16)
 INSERT INTO pabellones (nombre, tipo, estado)
